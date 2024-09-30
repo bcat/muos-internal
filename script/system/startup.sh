@@ -174,5 +174,11 @@ echo 2 >/proc/sys/abi/cp15_barrier &
 LOGGER "$0" "BOOTING" "Backing up global configuration"
 /opt/muos/script/system/config_backup.sh &
 
+
+LOGGER "$0" "BOOTING" "Running custom startup scripts"
+for SCRIPT in /run/muos/storage/script/boot/*.sh; do
+	[ -x "$SCRIPT" ] && "$SCRIPT"
+done &
+
 LOGGER "$0" "BOOTING" "Starting muX frontend"
 /opt/muos/script/mux/frontend.sh &
