@@ -6,8 +6,8 @@ LED_CONTROL=/opt/muos/device/current/script/led_control.sh
 RGBCONF=/run/muos/storage/theme/active/rgb/rgbconf.sh
 
 DISPLAY_IDLE() {
-	if [ "$(DISPLAY_READ lcd0 getbl)" -gt 10 ]; then
-		DISPLAY_WRITE lcd0 setbl 10
+	if [ "$(/opt/muos/device/current/script/bl.sh)" -gt 10 ]; then
+		/opt/muos/device/current/script/bl.sh 10
 	fi
 	case "$(GET_VAR device board/name)" in
 		rg40xx*) "$LED_CONTROL" 1 0 0 0 0 0 0 0 ;;
@@ -16,8 +16,8 @@ DISPLAY_IDLE() {
 
 DISPLAY_ACTIVE() {
 	BL="$(cat "$BRIGHT_FILE")"
-	if [ "$(DISPLAY_READ lcd0 getbl)" -ne "$BL" ]; then
-		DISPLAY_WRITE lcd0 setbl "$BL"
+	if [ "$(/opt/muos/device/current/script/bl.sh)" -ne "$BL" ]; then
+		/opt/muos/device/current/script/bl.sh "$BL"
 	fi
 	case "$(GET_VAR device board/name)" in
 		rg40xx*) [ -x "$RGBCONF" ] && "$RGBCONF" ;;
